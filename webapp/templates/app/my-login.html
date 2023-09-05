@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <br>
+    <div class="container bg-light shadow-sm p-5 form-layout">
+        <h4 class="text-uppercase text-center">Login</h4>
+        <hr>
+    <form action="" method="post">
+        {% csrf_token %}
+
+
+        {{form|crispy}}
+        
+        <div class="container text-center">
+            <button type="submit" class="btn btn-sm btn-warning w-50 btn-block p-2 button-register text-uppercase">
+                Login
+            </button>
+        </div>
+
+    </form>
+    <br>
+
+
+
+        <div class="container text-center text-uppercase">
+            <p>Already have an account?</p> 
+            <a href="{% url 'Register' %}" class="text-uppercase">
+                Register
+            </a>
+        </div>
+    </div>
+{% endblock  %}
