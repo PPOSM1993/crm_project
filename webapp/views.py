@@ -7,6 +7,7 @@ from django.contrib.auth.models import *
 from django.contrib.auth import *
 
 from django.contrib.auth.decorators import *
+from .models import  Record
 
 def Home(request):
     
@@ -58,4 +59,8 @@ def LogoutUser(request):
 #Dashboard
 @login_required(login_url='Login')
 def Dashboard(request):
-    return render(request, 'app/dashboard.html')
+    my_records = Record.objects.all()
+    
+    context = { 'records': my_records }
+    
+    return render(request, 'app/dashboard.html', context = context)
