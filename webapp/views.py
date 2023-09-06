@@ -7,7 +7,7 @@ from django.contrib.auth.models import *
 from django.contrib.auth import *
 
 from django.contrib.auth.decorators import *
-from .models import  Record
+from .models import *
 
 def Home(request):
     
@@ -64,3 +64,59 @@ def Dashboard(request):
     context = { 'records': my_records }
     
     return render(request, 'app/dashboard.html', context = context)
+
+login_required(login_url='Login')
+def CreateRecords(request):
+    
+    form = AddRecordForm()
+    
+    if request.method == 'POST':
+        form = AddRecordForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('Dashboard')
+        
+    context = {'form': form}
+    
+    return render(request, 'app/create-record.html', context = context)
+
+@login_required(login_url='Login')
+def UpdateRecords(request, pk):
+    
+    record = Record.objects.get(id=pk)
+    
+    form = UpdateRecordForm(instance=record)
+    
+    if request.method == 'POST':
+        form = UpdateRecordForm(request.POST, instance=record)
+
+        if form.is_valid():
+            form.save()
+            return redirect('Dashboard')
+        
+    context = {'form': form}
+    
+    return render(request, 'app/update-record.html', context = context)
+
+
+@login_required(login_url='Login')
+
+def SingularRecords(request, pk):
+    all_records = Record.objects.get(id=pk)
+    
+    context = {'record': all_records}
+    
+    return render(request, 'app/view-record.html', context = context)
+
+
+@login_required(login_url='Login')
+def DeleteRecords(request, pk):
+    
+    record = Record.objects.get(id=pk)
+    record.delete()
+    
+    #messages.success(request, "Your record was deleted!")
+
+    return redirect("Dashboard")
+
